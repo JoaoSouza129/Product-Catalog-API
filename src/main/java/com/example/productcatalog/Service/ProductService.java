@@ -28,15 +28,18 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public void deleteById(Long id) {
-        productRepository.deleteById(id);
+    public void deleteProduct(Long id) {
+        Product product=productRepository.findById(id).orElseThrow(()->new RuntimeException("Product not found with id:"+id));
+        productRepository.delete(product);
     }
 
     public Product updateProduct(Long id, Product productDetails) {
         Product product1=productRepository.findById(id).orElseThrow(()->new RuntimeException("Product not found with id:"+id));
 
         product1.setName(productDetails.getName());
+        product1.setDescription(productDetails.getDescription());
         product1.setPrice(productDetails.getPrice());
+        product1.setCategory(productDetails.getCategory());
         product1.setStock(productDetails.getStock());
 
         return productRepository.save(product1);
